@@ -1,0 +1,29 @@
+#define N 5
+byte turn, nr_pro;
+bool n[N];
+active [N] proctype P()
+{ byte i, j;
+again:
+i = _pid;
+do
+:: n[i]= true;
+j=0;
+do
+:: j < N-1 -> if
+:: (j!=i) ->
+n[i] = false;
+(turn != j) -> n[i] = true;
+turn= i;
+n[i]= false;
+:: else
+  fi;
+ j = j+1;
+ :: else -> break 
+ od;
+ nr_pro++;
+CS: assert(nr_pro == 1); 
+ nr_pro--;
+  n[i] = false;
+   turn = 0;
+   od;
+  goto again } 
