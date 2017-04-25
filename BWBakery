@@ -47,4 +47,4 @@ atomic { n_pr++;
  fi;
 number[_pid] = 0;
 od;
-goto enter  
+goto enter}
