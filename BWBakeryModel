@@ -1,6 +1,6 @@
 #define N 5
-# define mutex (nr_pro <=1)
-bool  choose[N] = false, cs;
+# define mut_exc (n_pr <=1)
+bool  choose[N] = false, cs, critsec;
 byte number[N]=0;
 byte mycolor[N]
 byte n_pr=0;
@@ -40,11 +40,17 @@ active [N] proctype Processes() {
                   j= j+1
      od;
 atomic { n_pr++;
+critsec= true;
  Crit_Sec: assert (n_pr == 1);
- n_pr--};
+ n_pr--;
+ critsec= false};
  if :: mycolor[_pid] == false -> color= true;
     ::else-> color=false;
  fi;
 number[_pid] = 0;
 od;
 goto enter}
+//ltl me ![]mut_exc
+ltl cs {<>critsec}
+//ltl ffs {P[2]@entry - ><> P[2]@Crit_Sec}
+//ltl lat {<>[] ((P[4]@entry) -> (P[4]@Crit_Sec))}
