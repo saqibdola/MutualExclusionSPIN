@@ -1,6 +1,6 @@
 #define N 5
 # define mut_exc (n_pr <=1)
-bool  choose[N] = false, cs, critsec;
+bool  choose[N] = false, cs;
 byte number[N]=0;
 byte mycolor[N]
 byte n_pr=0;
@@ -40,10 +40,8 @@ active [N] proctype Processes() {
                   j= j+1
      od;
 atomic { n_pr++;
-critsec= true;
  Crit_Sec: assert (n_pr == 1);
- n_pr--;
- critsec= false};
+ n_pr--};
  if :: mycolor[_pid] == false -> color= true;
     ::else-> color=false;
  fi;
