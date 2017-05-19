@@ -1,54 +1,53 @@
-#define N 5
-# define mut_exc (n_pr <=1)
-bool  choose[N] = false, cs;
-byte number[N]=0;
-byte mycolor[N]
-byte n_pr=0;
-bit color;
-active [N] proctype Processes() {
- byte max, j, i;
- enter:
-  do
-  :: choose[_pid] = true;
-     mycolor[_pid]= color;
-     max = 0;
-     i = 0;
-    do
-    :: i > N-1 ->break;
-    ::else -> if :: max < number[i] && mycolor[max]== mycolor[i]-> max = number[i]
-                 :: else -> break
-              fi;
-     i= i+1;
-     od;
-     number[_pid] = 1 + max;  
-     choose[_pid] = false;
-     j = 0;
-      do
-      :: j > N-1 -> break
-      :: else -> if
-                  :: j != _pid ->
-                     choose[j] ==false
-                   if
-                   ::mycolor[_pid] == mycolor[j] ->
-                     (number[j] == 0) || (number[_pid] < number[j]) || (number[_pid] == number[j]) || 
-                     (mycolor[_pid] != mycolor[j])  || ((number[_pid] == number[j]) && (_pid < j))
-                   ::else -> (number[j]==0) || (mycolor[_pid] != color) || (mycolor[j] == mycolor[_pid]) ||
-                             ((number[_pid] == number[j]) && (_pid < j))
-                   fi;
-                    :: else
-                  fi;
-                  j= j+1
-     od;
-atomic { n_pr++;
- Crit_Sec: assert (n_pr == 1);
- n_pr--};
- if :: mycolor[_pid] == false -> color= true;
-    ::else-> color=false;
- fi;
-number[_pid] = 0;
-od;
-goto enter}
-//ltl me ![]mut_exc
-ltl cs {<>critsec}
-//ltl ffs {P[2]@entry - ><> P[2]@Crit_Sec}
-//ltl lat {<>[] ((P[4]@entry) -> (P[4]@Crit_Sec))}
+	#define N 5
+	# define mut_exc (n_pr ==1)
+	bool  choose[N] = false, cs;
+	byte number[N]=0;
+	byte mycolor[N]
+	byte n_pr=0;
+	bit color;
+	active [N] proctype Processes() {
+	 byte max, j, i;
+	 enter:
+	  do
+	  :: choose[_pid] = true;
+	     mycolor[_pid]= color;
+	     max = 0;
+	     i = 0;
+	    do
+	    :: i > N-1 ->break;
+	    ::else -> if :: max < number[i] && mycolor[max]== mycolor[i]-> max = number[i]
+	                 :: else -> break
+	              fi;
+	     i= i+1;
+	     od;
+	     number[_pid] = 1 + max;  
+	     choose[_pid] = false;
+	     j = 0;
+	      do
+	      :: j > N-1 -> break
+	      :: else -> if
+	                  :: j != _pid ->
+	                     choose[j] ==false
+	                   if
+	                   ::mycolor[_pid] == mycolor[j] ->
+	                     (number[j] == 0) || (number[_pid] < number[j]) || (number[_pid] == number[j]) || 
+	                     (mycolor[_pid] != mycolor[j])  || ((number[_pid] == number[j]) && (_pid < j))
+	                   ::else -> (number[j]==0) || (mycolor[_pid] != color) || (mycolor[j] == mycolor[_pid]) ||
+	                             ((number[_pid] == number[j]) && (_pid < j))
+	                   fi;
+	                    :: else
+	                  fi;
+	                  j= j+1
+	     od;
+	atomic { n_pr++;
+	 Crit_Sec: assert (n_pr == 1);
+	 n_pr--};
+	 if :: mycolor[_pid] == false -> color= true;
+	    ::else-> color=false;
+	 fi;
+	number[_pid] = 0;
+	od;
+	goto enter}
+	//ltl me {![]mut_exc}
+	//ltl ffs {((choose[2]==true) -><> (Processes[2]@Crit_Sec))}
+	//ltl lat {<>[] ((Processes[4]@enter) -> (Processes[4]@Crit_Sec))}
