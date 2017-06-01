@@ -1,6 +1,6 @@
 	#define N 5
 	# define mut_exc (n_pr ==1)
-	bool  choose[N] = false, cs;
+	bool  choose[N] = false;
 	byte number[N]=0;
 	byte mycolor[N]
 	byte n_pr=0;
