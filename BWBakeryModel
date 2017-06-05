@@ -1,5 +1,5 @@
 	#define N 5
-	# define mut_exc (n_pr ==1)
+	# define mut_exc (n_pr <=1)
 	bool  choose[N] = false;
 	byte number[N]=0;
 	byte mycolor[N]
@@ -30,7 +30,7 @@
 	                     choose[j] ==false
 	                   if
 	                   ::mycolor[_pid] == mycolor[j] ->
-	                     (number[j] == 0) || (number[_pid] < number[j]) || (number[_pid] == number[j]) || 
+	                     (number[j] == 0) || (number[_pid] < number[j]) ||  
 	                     (mycolor[_pid] != mycolor[j])  || ((number[_pid] == number[j]) && (_pid < j))
 	                   ::else -> (number[j]==0) || (mycolor[_pid] != color) || (mycolor[j] == mycolor[_pid]) ||
 	                             ((number[_pid] == number[j]) && (_pid < j))
@@ -48,6 +48,6 @@
 	number[_pid] = 0;
 	od;
 	goto enter}
-	//ltl me {![]mut_exc}
+	//ltl me {[]mut_exc}
 	//ltl ffs {((choose[2]==true) -><> (Processes[2]@Crit_Sec))}
 	//ltl lat {<>[] ((Processes[4]@enter) -> (Processes[4]@Crit_Sec))}
